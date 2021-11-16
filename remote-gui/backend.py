@@ -21,9 +21,24 @@ cmd_name = ['set_red', 'set_green', 'set_blue']
 # ... '--port' or '-p' options.  Assuming they are found, set the 'HOST' and 'PORT' ...
 # ... variables accordingly.
 
-# Default Address Info.
-HOST = '127.0.0.1'
-PORT = 9002
+# Parse the command line for address info.
+import sys
+argv = sys.argv
+
+if '-h' in argv:
+    HOST = argv[argv.index('-h')+1]
+elif '--host' in argv:
+    HOST = argv[argv.index('--host')+1]
+else:
+    HOST = '127.0.0.1'
+
+if '-p' in argv:
+    PORT = int(argv[argv.index('-p')+1])
+elif '--port' in argv:
+    PORT = int(argv[argv.index('--port')+1])
+else:
+    PORT = 9002
+
 ADDR = (HOST, PORT)
 
 # Create server socket bound to HOST and listening on port PORT.
