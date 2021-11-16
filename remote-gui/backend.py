@@ -54,10 +54,10 @@ try:
         code, duty = cmd; idx = code - 1
         print(f'{str(datetime.today())[:-3]}:\tClient \'{addr[0]}:{addr[1]:d}\' sent the command \'{cmd_name[idx]}({duty:.03f})\'.')
         # Check duty cycle
-        if 0 <= duty <= 1:
+        if 0.0 <= duty <= 100.0:
             vars(squid.Squid)[cmd_name[idx]](rgb, duty)
         else:
-            print('ERROR:\tDuty cycle must be a non-negative number that is less than or equal to one.')
+            print('ERROR:\tDuty cycle must be a non-negative number that is less than or equal to one hundred (percent).')
     # Cleanup
         s.close()
 except KeyboardInterrupt:
