@@ -3,9 +3,11 @@ import socket as sock
 from datetime import datetime
 import struct
 
+cmd_name = ['set_red', 'set_green', 'set_blue']
+
 # Network related objects and tasks.
 sock.setdefaulttimeout(2)
-s = sock.socket()
+
 my_struct = struct.Struct('!Bd')
 
 # Default remote address.
@@ -19,6 +21,17 @@ def connect(s):
     except ConnectionRefusedError:
         print(f'ERROR {str(datetime.today())[:-3]}:\tConnection with remote socket at \'{addr[0]}:{addr[1]:d}\' \
          refused.')
+
+def send_cmd(cmd, duty):
+    s = sock.socket()
+    connect(s)
+    # Pack the message into a bytes object with network formatting.
+    bmsg = my_struct.pack(cmd+1, float(duty))
+    # Send the message.
+    sent = s.send(bmsg)
+    print(f'Client \'{s.getsockname()}\' sent {sent:d} bytes of data to server \'{addr[0]}:{addr[1]:d}\'.')
+    print(f'Command sent:\t{cmd_name[cmd]}({float(duty):.03f}).')
+    s.close()
 
 class App:
     
@@ -41,28 +54,15 @@ class App:
 
     def updateRed(self, duty):
         # rgb.set_red(float(duty))
-        connect(s)
-        # Pack the message into a bytes object with network formatting.
-        bmsg = my_struct.pack(1, float(duty))
-        # Send the message.
-        sent = s.send(bmsg)
-        s.close()
+        send_cmd(0, duty)
 
     def updateGreen(self, duty):
         # rgb.set_green(float(duty))
-        connect(s)
-        bmsg = my_struct.pack(2, float(duty))
-        # Send the message.
-        sent = s.send(bmsg)
-        s.close()
+        send_cmd(1, duty)
 
     def updateBlue(self, duty):
         # rgb.set_blue(float(duty))
-        connect(s)
-        bmsg = my_struct.pack(3, float(duty))
-        # Send the message.
-        sent = s.send(bmsg)
-        s.close()
+        send_cmd(2, duty)
 
 root = Tk()
 root.wm_title('RGB LED Control')
