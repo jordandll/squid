@@ -10,9 +10,24 @@ sock.setdefaulttimeout(2)
 
 my_struct = struct.Struct('!Bd')
 
-# Default remote address.
-host = '127.0.0.1'
-port = 9002
+# Parse the command line for address info.
+import sys
+argv = sys.argv
+
+if '-h' in argv:
+    host = argv[argv.index('-h')+1]
+elif '--host' in argv:
+    host = argv[argv.index('--host')+1]
+else:
+    host = '127.0.0.1'
+
+if '-p' in argv:
+    port = int(argv[argv.index('-p')+1])
+elif '--port' in argv:
+    port = int(argv[argv.index('--port')+1])
+else:
+    port = 9002
+
 addr = (host, port)
 
 def connect(s):
