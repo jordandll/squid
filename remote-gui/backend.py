@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 import socket as sock
 from datetime import datetime
-import squid
+# import squid
 import struct
 
 my_struct = struct.Struct('!Bd')
 
 # Squid object.
-rgb = squid.Squid(18, 23, 24)
+# rgb = squid.Squid(18, 23, 24)
 
 """In the following list of Squid object method names, the index of each method name is equal to the control code value
 minus one* that must be invoked in the frontend script, 'front.py', in order for the corresponding method/command to be
@@ -55,7 +55,8 @@ try:
         print(f'{str(datetime.today())[:-3]}:\tClient \'{addr[0]}:{addr[1]:d}\' sent the command \'{cmd_name[idx]}({duty:.03f})\'.')
         # Check duty cycle
         if 0 <= duty <= 1:
-            vars(squid.Squid)[cmd_name[idx]](rgb, duty)
+            # vars(squid.Squid)[cmd_name[idx]](rgb, duty)
+            pass
         else:
             print('ERROR:\tDuty cycle must be a non-negative number that is less than or equal to one.')
     # Cleanup
